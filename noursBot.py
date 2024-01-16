@@ -32,26 +32,26 @@ def event(payload):
     if len(text) <= 1:
         client.chat_delete(channel=channel_id, ts=timestamp)
 
-    elif not user_id in whitelisted_users and channel_id == "C06C5Q3GF5J":
-        messages_set.add(timestamp)
+    #elif not user_id in whitelisted_users and channel_id == "C06C5Q3GF5J":
+        #messages_set.add(timestamp)
 
-        for ts in messages_set:
+        #for ts in messages_set:
             
-            ts_to_delete.add(ts)
-            try:
-                client.chat_delete(channel=channel_id, ts=ts)
-            except Exception as e:
+            #ts_to_delete.add(ts)
+            #try:
+                #client.chat_delete(channel=channel_id, ts=ts)
+            #except Exception as e:
                 #//print(e)
-                pass
+                #pass
         
-        try:
-            while len(messages_set) != 0:
-                messages_set.difference_update(ts_to_delete)
+        #try:
+            #while len(messages_set) != 0:
+                #messages_set.difference_update(ts_to_delete)
             
-            ts_to_delete.discard(ts_to_delete[0])
+            #ts_to_delete.discard(ts_to_delete[0])
 
-        except:
-            pass
+        #except:
+            #pass
         
 
 if __name__ == "__main__":
