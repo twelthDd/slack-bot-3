@@ -23,6 +23,8 @@ WelcomeMessages = {}
 #! test bad words
 BAD_WORDS = ['bad', 'stop', 'dumb', 'stupid']
 
+print('server started (file ran)')
+
 class WelcomeMessage:
     START_TEXT = {
         'type': 'section',
