@@ -13,8 +13,9 @@ load_dotenv(dotenv_path=env_path)
 #* creates flask app and the slack event adapter (used to receive data from slack api), slack client (used to comunicate with slack api) and defines BOT_ID
 app = Flask(__name__)
 slack_event_adapter = SlackEventAdapter(os.environ["SIGNING_SECRET"], "/slack/events", app)
-client = slack.WebClient(token=os.environ['SLACK_BOT_TOKEN'])   
-BOT_ID = client.api_call("auth.test")['user_id']
+client = slack.WebClient(token=os.environ['SLACK_USER_TOKEN'])
+bot_client = slack.WebClient(token=os.environ['SLACK_BOT_TOKEN'])
+BOT_ID = bot_client.api_call("auth.test")['user_id']
 
 #* WHITELISTED USERS (Bot) (Nour)
 whitelisted_users = [None]
@@ -82,7 +83,7 @@ def send_welcome_message(channel, user):
 
     welcome = WelcomeMessage(channel, user)
     message = welcome.get_message()
-    response = client.chat_postMessage(**message)
+    response = bot_client.chat_postMessage(**message)
     welcome.timestamp = response['ts']
     
     WelcomeMessages[channel][user] = welcome
@@ -115,7 +116,7 @@ def message(payload):
             
         elif check_if_bad_words(text):
             ts = event.get('ts')
-            client.chat_postMessage(
+            bot_client.chat_postMessage(
                 channel=channel_id, thread_ts=ts, text = "That is a bad word!(TESTING)")
     #* Nours's part of the bot (the bot is still being combined)
     
@@ -161,7 +162,7 @@ def reaction(payload):
     welcome.completed = True
     welcome.channel = channel_id
     message = welcome.get_message()
-    updated_message = client.chat_update(**message)
+    updated_message = bot_client.chat_update(**message)
     welcome.timestamp = updated_message['ts']
 
 @app.route('/message-count', methods=['POST'])
@@ -170,7 +171,7 @@ def message_count():
     user_id = data.get('user_id')
     channel_id = data.get('channel_id')
     message_count = message_counts.get(user_id, 0)
-    client.chat_postMessage(channel=channel_id, text=f"Message: {message_count}")
+    bot_client.chat_postMessage(channel=channel_id, text=f"Message: {message_count}")
     return Response(), 200
 
 

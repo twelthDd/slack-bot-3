@@ -11,7 +11,7 @@ load_dotenv(dotenv_path=env_path)
 app = Flask(__name__)
 slack_event_adapter = SlackEventAdapter(os.environ["SIGNING_SECRET"], "/slack/events", app)
 
-client = slack.WebClient(token=os.environ["SLACK_TOKEN"])
+client = slack.WebClient(token=os.environ["SLACK_USER_``TOKEN"])
 
 #* WHITELISTED USERS (Nour, Noah and Bot)
 whitelisted_users = ["U06C38LSP1Q", "U06CCMLG5C2", None]
